@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const btnText = document.querySelector('.getText');
   const btnUsers = document.querySelector('.getUsers');
-  let textLoaded = false;
-  let usersLoaded = false;
+  const btnPosts = document.querySelector('.getPosts');
+ 
 
   const getText = () => {
     fetch('sample.txt')
@@ -39,7 +39,34 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(err => alert(err));
   }
 
+  const getPosts = () => {
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then( res => {
+        if(res.ok) {
+          btnPosts.removeEventListener('click', getPosts);
+          return res.json()
+        } else {
+          console.dir(res)
+          return Promise.reject(`Something went wrong, you get ${res.status} error code`)
+        }
+      })
+      .then(posts => {
+        let output = `<h2>Posts</h2>`;
+        posts.forEach(post => {
+          output += `
+          <div>
+            <h4>${post.title}</h4>
+            <p>${post.body}</p>
+          </div>        
+          `
+        });
+        document.querySelector('.posts_cnt').innerHTML = output
+      })
+      .catch(err => alert(err));
+  }
+
   btnText.addEventListener('click', getText);
   btnUsers.addEventListener('click', getUsers);
+  btnPosts.addEventListener('click', getPosts);
 
 });
