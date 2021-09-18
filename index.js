@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnText = document.querySelector('.getText');
   const btnUsers = document.querySelector('.getUsers');
   const btnPosts = document.querySelector('.getPosts');
+  const btnAddPost = document.querySelector('.addPost');
  
 
   const getText = () => {
@@ -51,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       })
       .then(posts => {
-        let output = `<h2>Posts</h2>`;
+        let output = ``;
         posts.forEach(post => {
           output += `
           <div>
@@ -60,13 +61,50 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>        
           `
         });
-        document.querySelector('.posts_cnt').innerHTML = output
+        document.querySelector('.posts').innerHTML = output
       })
       .catch(err => alert(err));
+  }
+
+  const addPost = (e) => {
+    e.preventDefault();
+
+    let title = document.getElementById('title').value;
+    let body = document.getElementById('body').value;
+
+    if (body && title) {
+      fetch('https://jsonplaceholder.typicode.com/posts', {
+        method: 'POST', 
+        headers: {
+          'Accept': 'application/json text/plain', 
+          'Content-type': 'application/json'
+        }, 
+        body: JSON.stringify({title: title, body: body})
+      })
+      .then(res => {
+        if (res.ok) {
+          return res.json()
+        } else {
+          return Promise.reject(`Something went wrong, you get ${res.status} error code`)
+        }
+      })
+      .then(data => {
+        let div = document.createElement('div');
+        div.innerHTML = `
+          <h4>${data.title}</h4>
+          <p>${data.body}</p>
+        `
+        document.querySelector('.posts').prepend(div);
+      })
+      .catch(err => alert(err));
+    } else {
+      alert('Both fields should not be empty');
+    }   
   }
 
   btnText.addEventListener('click', getText);
   btnUsers.addEventListener('click', getUsers);
   btnPosts.addEventListener('click', getPosts);
+  btnAddPost.addEventListener('submit', addPost);
 
 });

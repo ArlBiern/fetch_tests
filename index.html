@@ -10,6 +10,17 @@
   <button class="getText">Get text</button>
   <button class="getUsers">Get users</button>
   <button class="getPosts">Get posts</button>
+  <hr>
+  <form action="#" id="addPost" class="addPost">
+    <div>
+      <input type="text" id="title" placeholder="Title">
+    </div>
+    <div>
+      <textarea id="body" placeholder="Body"></textarea>
+    </div>
+    <input type="submit" value="Submit">
+  </form>
+
   <div class="txt_cnt">
     <h2>Text</h2>
     <div class="txt"></div>
@@ -18,7 +29,9 @@
     <h2>Users</h2>
     <ul class="users"></ul>
   </div>
-  <div class="posts_cnt">    
+  <div class="posts_cnt"> 
+    <h2>Posts</h2>
+    <div class="posts"></div>   
   </div>
   <script src="index.js"></script>
 </body>
